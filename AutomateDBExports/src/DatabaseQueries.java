@@ -6,8 +6,8 @@ public class DatabaseQueries {
 		int id = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + Cosntants.DB_NAME,
-					Cosntants.DB_USER_NAME, Cosntants.DB_PASSWORD);
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + Constants.DB_NAME,
+					Constants.DB_USER_NAME, Constants.DB_PASSWORD);
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM " + formName + " ORDER BY id DESC LIMIT 1");
 			while (rs.next())
@@ -21,8 +21,8 @@ public class DatabaseQueries {
 
 	public static Connection getDBConnection() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.jdbc.Driver");
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + Cosntants.DB_NAME,
-				Cosntants.DB_USER_NAME, Cosntants.DB_PASSWORD);
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/" + Constants.DB_NAME,
+				Constants.DB_USER_NAME, Constants.DB_PASSWORD);
 		return con;
 	}
 

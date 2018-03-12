@@ -13,12 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.plaf.FileChooserUI;
+
 import com.mysql.jdbc.StringUtils;
 
-public class Automate {
+public class NTFJVVAutomation {
 
 	static final Map<String, Integer> idMap = new HashMap<String, Integer>();
 	static final List<String> formList = new ArrayList<String>();
+	
 	// static String formName = "ap_form_31341";
 //	static String HOME_DIR = "C://ntfjvv/";
 
@@ -55,25 +58,24 @@ public class Automate {
 			formList.add("ap_form_32467");
 			// formList.add("ap_form_14132");
 			
-//			MySQLDumper.loadDatabaseTable(formList);
-			// Getting latest Ids from all the tables in local database
 			loadLatestIds();
 
+			setUp();
+			
 			// Unzipping the downloaded file from national database
-			String zippedFile = Constants.HOME_DIR + "ntfjvv.zip";
-			UnzipUtility.unzip(zippedFile, Constants.HOME_DIR);
+			UnzipUtility.unzip(Constants.ZIPPED_DATA_FILE, Constants.HOME_DIR);
 
-			// Create separate file in staging directory for each table with new data only
-			createSeparateDumpFiles(Constants.HOME_DIR + "/ntfjvv.sql");
+			// Create separate file in staging directory with new data only
+			filterDataRecords(Constants.UNZIPPED_DATA_FILE);
+			
+			cleanUp();
 
-			// MySQLDumper.exportDataFromStagingTable(formName, idValue);
-			MySQLDumper.loadDatabaseTable(formList);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public static void createSeparateDumpFiles(String rawDatafile) throws Exception {
+	public static void filterDataRecords(String rawDatafile) throws Exception {
 		BufferedReader file = null;
 		try {
 			file = new BufferedReader(new FileReader(rawDatafile));
@@ -97,7 +99,7 @@ public class Automate {
 					List<String> lines = new ArrayList<>();
 					if (recordId > idMap.get(formList.get(0))) {
 						lines.add(line);
-						writeTextToFile(lines, staging_directory + "stagingFile" + ".sql");
+						writeTextToFile(lines, Constants.STAGING_FILE);
 						lastDataRecord = line;
 					}
 
@@ -106,7 +108,7 @@ public class Automate {
 					List<String> lines = new ArrayList<>();
 					if (recordId > idMap.get(formList.get(1))) {
 						lines.add(line);
-						writeTextToFile(lines, staging_directory + "stagingFile" + ".sql");
+						writeTextToFile(lines, Constants.STAGING_FILE);
 						lastDataRecord = line;
 					}
 
@@ -115,7 +117,7 @@ public class Automate {
 					List<String> lines = new ArrayList<>();
 					if (recordId > idMap.get(formList.get(2))) {
 						lines.add(line);
-						writeTextToFile(lines, staging_directory + "stagingFile" + ".sql");
+						writeTextToFile(lines,  Constants.STAGING_FILE);
 						lastDataRecord = line;
 					}
 
@@ -289,6 +291,16 @@ public class Automate {
 
 		}
 
+	}
+	
+	private static void setUp() throws IOException {
+		Files.deleteIfExists(Paths.get(Constants.STAGING_FILE));
+	}
+	
+	private static void cleanUp() throws IOException {
+		Files.deleteIfExists(Paths.get(Constants.ZIPPED_DATA_FILE));
+		Files.deleteIfExists(Paths.get(Constants.UNZIPPED_DATA_FILE));
+		
 	}
 
 }
