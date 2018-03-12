@@ -245,6 +245,7 @@ CREATE TABLE IF NOT EXISTS `ap_form_14132` (
   `status` int(4) unsigned NOT NULL DEFAULT '1',
   `resume_key` varchar(10) DEFAULT NULL,
   `Time` time DEFAULT NULL COMMENT 'Time',
+  `element_8` double DEFAULT NULL COMMENT 'Number',
   `Timeittakestofindanitem&giveittoJamatimember(Jamatbelongings)` double DEFAULT NULL COMMENT 'Number',
   `AretheresufficientvolunteerstoattendtotheJamat/Carryouttheproces` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT 'Multiple Choice',
   `AretherevolunteerstodirecttheJamatastowhatlinestheyshouldbein` smallint(4) unsigned NOT NULL DEFAULT '0' COMMENT 'Multiple Choice',
